@@ -13,6 +13,8 @@
 		841D4544203318FE00042AEE /* AMLaunchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 841D4543203318FE00042AEE /* AMLaunchViewController.m */; };
 		843545F6201E656C004A42C8 /* AMNote.m in Sources */ = {isa = PBXBuildFile; fileRef = 843545F5201E656C004A42C8 /* AMNote.m */; };
 		843545F9201E6AE2004A42C8 /* AMStaffView.m in Sources */ = {isa = PBXBuildFile; fileRef = 843545F8201E6AE2004A42C8 /* AMStaffView.m */; };
+		84399BAD203CA57900331879 /* BackgroundSound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 84399BAC203CA57900331879 /* BackgroundSound.mp3 */; };
+		844B71FE2039A26500B8C8A1 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 844B72002039A26500B8C8A1 /* Localizable.strings */; };
 		845C59DB200FD82900A29307 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 845C59DA200FD82900A29307 /* AppDelegate.m */; };
 		845C59E3200FD82900A29307 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 845C59E2200FD82900A29307 /* Assets.xcassets */; };
 		845C59E6200FD82900A29307 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 845C59E4200FD82900A29307 /* LaunchScreen.storyboard */; };
@@ -37,6 +39,9 @@
 		843545F5201E656C004A42C8 /* AMNote.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AMNote.m; sourceTree = "<group>"; };
 		843545F7201E6AE2004A42C8 /* AMStaffView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMStaffView.h; sourceTree = "<group>"; };
 		843545F8201E6AE2004A42C8 /* AMStaffView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMStaffView.m; sourceTree = "<group>"; };
+		84399BAC203CA57900331879 /* BackgroundSound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = BackgroundSound.mp3; sourceTree = "<group>"; };
+		844B71FF2039A26500B8C8A1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		844B72012039A27900B8C8A1 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		845C59D6200FD82900A29307 /* SOL&fa.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "SOL&fa.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		845C59D9200FD82900A29307 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		845C59DA200FD82900A29307 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -68,6 +73,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		84399BAB203CA4F600331879 /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				84399BAC203CA57900331879 /* BackgroundSound.mp3 */,
+			);
+			path = Sounds;
+			sourceTree = "<group>";
+		};
+		844B71FB2039A20C00B8C8A1 /* Localizations */ = {
+			isa = PBXGroup;
+			children = (
+				844B72002039A26500B8C8A1 /* Localizable.strings */,
+			);
+			path = Localizations;
+			sourceTree = "<group>";
+		};
 		845C59CD200FD82900A29307 = {
 			isa = PBXGroup;
 			children = (
@@ -88,6 +109,7 @@
 			isa = PBXGroup;
 			children = (
 				8487F53D203237B80085E99A /* System */,
+				84868718203862A000169706 /* Managers */,
 				845C59F8200FDAAA00A29307 /* Models */,
 				845C59F7200FDAA000A29307 /* Views */,
 				845C59F6200FDA2100A29307 /* Controllers */,
@@ -113,18 +135,10 @@
 		845C59F7200FDAA000A29307 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				840F93C620185A2C000E3BFD /* AMEmmiterLayer.h */,
-				840F93C520185A2C000E3BFD /* AMEmmiterLayer.m */,
-				840F93C720185A2C000E3BFD /* AMSheetButton.h */,
-				840F93C420185A2C000E3BFD /* AMSheetButton.m */,
-				843545F7201E6AE2004A42C8 /* AMStaffView.h */,
-				843545F8201E6AE2004A42C8 /* AMStaffView.m */,
-				84ABE13E203735FE00B4898E /* AMAnswerView.h */,
-				84ABE13F203735FE00B4898E /* AMAnswerView.m */,
-				84066E6120246F0100CF7F00 /* AMNoteImageView.h */,
-				84066E6220246F0100CF7F00 /* AMNoteImageView.m */,
-				84BE769E20342E5800D6CD90 /* AMTimeLineView.h */,
-				84BE769F20342E5800D6CD90 /* AMTimeLineView.m */,
+				848687172038627E00169706 /* View */,
+				848687152038625B00169706 /* Button */,
+				848687142038624400169706 /* ImageView */,
+				848687162038627400169706 /* Layer */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -134,12 +148,59 @@
 			children = (
 				843545F4201E656C004A42C8 /* AMNote.h */,
 				843545F5201E656C004A42C8 /* AMNote.m */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		848687142038624400169706 /* ImageView */ = {
+			isa = PBXGroup;
+			children = (
+				84066E6120246F0100CF7F00 /* AMNoteImageView.h */,
+				84066E6220246F0100CF7F00 /* AMNoteImageView.m */,
+			);
+			path = ImageView;
+			sourceTree = "<group>";
+		};
+		848687152038625B00169706 /* Button */ = {
+			isa = PBXGroup;
+			children = (
+				840F93C720185A2C000E3BFD /* AMSheetButton.h */,
+				840F93C420185A2C000E3BFD /* AMSheetButton.m */,
+			);
+			path = Button;
+			sourceTree = "<group>";
+		};
+		848687162038627400169706 /* Layer */ = {
+			isa = PBXGroup;
+			children = (
+				840F93C620185A2C000E3BFD /* AMEmmiterLayer.h */,
+				840F93C520185A2C000E3BFD /* AMEmmiterLayer.m */,
+			);
+			path = Layer;
+			sourceTree = "<group>";
+		};
+		848687172038627E00169706 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				843545F7201E6AE2004A42C8 /* AMStaffView.h */,
+				843545F8201E6AE2004A42C8 /* AMStaffView.m */,
+				84ABE13E203735FE00B4898E /* AMAnswerView.h */,
+				84ABE13F203735FE00B4898E /* AMAnswerView.m */,
+				84BE769E20342E5800D6CD90 /* AMTimeLineView.h */,
+				84BE769F20342E5800D6CD90 /* AMTimeLineView.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		84868718203862A000169706 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
 				84ABE1382035FD3700B4898E /* AMNoteGame.h */,
 				84ABE1392035FD3700B4898E /* AMNoteGame.m */,
 				84ABE13B2036062D00B4898E /* AMInfoManager.h */,
 				84ABE13C2036062D00B4898E /* AMInfoManager.m */,
 			);
-			path = Models;
+			path = Managers;
 			sourceTree = "<group>";
 		};
 		8487F53D203237B80085E99A /* System */ = {
@@ -154,6 +215,8 @@
 		8487F53E203237F20085E99A /* Resourses */ = {
 			isa = PBXGroup;
 			children = (
+				84399BAB203CA4F600331879 /* Sounds */,
+				844B71FB2039A20C00B8C8A1 /* Localizations */,
 				845C59E2200FD82900A29307 /* Assets.xcassets */,
 				845C59E4200FD82900A29307 /* LaunchScreen.storyboard */,
 			);
@@ -211,6 +274,7 @@
 			knownRegions = (
 				en,
 				Base,
+				ru,
 			);
 			mainGroup = 845C59CD200FD82900A29307;
 			productRefGroup = 845C59D7200FD82900A29307 /* Products */;
@@ -227,7 +291,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84399BAD203CA57900331879 /* BackgroundSound.mp3 in Resources */,
 				845C59E6200FD82900A29307 /* LaunchScreen.storyboard in Resources */,
+				844B71FE2039A26500B8C8A1 /* Localizable.strings in Resources */,
 				845C59E3200FD82900A29307 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -258,6 +324,15 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		844B72002039A26500B8C8A1 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				844B71FF2039A26500B8C8A1 /* en */,
+				844B72012039A27900B8C8A1 /* ru */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
 		845C59E4200FD82900A29307 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -273,6 +348,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -328,6 +404,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -378,6 +455,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = N5RAPCKDR7;
 				INFOPLIST_FILE = "SOL&fa/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -392,6 +470,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = N5RAPCKDR7;
 				INFOPLIST_FILE = "SOL&fa/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

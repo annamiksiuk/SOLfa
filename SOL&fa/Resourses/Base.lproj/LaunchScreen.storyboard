@@ -21,24 +21,34 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Background" translatesAutoresizingMaskIntoConstraints="NO" id="emU-aP-DQr">
+                            <imageView autoresizesSubviews="NO" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Background" translatesAutoresizingMaskIntoConstraints="NO" id="emU-aP-DQr">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Logo" translatesAutoresizingMaskIntoConstraints="NO" id="FZ8-H1-W1H">
+                                <rect key="frame" x="27" y="173" width="320" height="320"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="320" id="A9Z-QZ-2Jw"/>
+                                    <constraint firstAttribute="width" constant="320" id="KFV-e3-RRv"/>
+                                </constraints>
                             </imageView>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="emU-aP-DQr" firstAttribute="width" secondItem="Ze5-6b-2t3" secondAttribute="width" id="J36-K8-pOY"/>
-                            <constraint firstItem="emU-aP-DQr" firstAttribute="height" secondItem="Ze5-6b-2t3" secondAttribute="height" id="NfH-Y3-1v4"/>
-                            <constraint firstItem="emU-aP-DQr" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="qcr-rD-OJt"/>
-                            <constraint firstItem="emU-aP-DQr" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="yec-Zp-6VO"/>
+                            <constraint firstItem="FZ8-H1-W1H" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="EuO-Ny-8TH"/>
+                            <constraint firstItem="emU-aP-DQr" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="Gwt-f8-6iD"/>
+                            <constraint firstItem="emU-aP-DQr" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="V2S-l7-KAb"/>
+                            <constraint firstItem="emU-aP-DQr" firstAttribute="width" secondItem="Ze5-6b-2t3" secondAttribute="width" id="ajb-2s-DDX"/>
+                            <constraint firstItem="FZ8-H1-W1H" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="fUo-UE-nYq"/>
+                            <constraint firstItem="emU-aP-DQr" firstAttribute="height" secondItem="Ze5-6b-2t3" secondAttribute="height" id="kuu-cn-lBo"/>
                         </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="52" y="374.66266866566718"/>
+            <point key="canvasLocation" x="52" y="373.76311844077964"/>
         </scene>
     </scenes>
     <resources>
         <image name="Background" width="600" height="600"/>
+        <image name="Logo" width="300" height="238"/>
     </resources>
 </document>

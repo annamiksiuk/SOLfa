@@ -12,6 +12,7 @@
 
 @property (assign, nonatomic) NSTimeInterval lastTime;
 @property (assign, nonatomic) NSInteger lastScore;
+@property (assign, nonatomic) BOOL sound;
 
 + (AMInfoManager*) sharedManager;
 

@@ -15,11 +15,11 @@
 
 // BASE COLOR PALETTE
 
-#define BASE_PALETTE_COLOR1 colorFromRGB(252, 231, 103)
-#define BASE_PALETTE_COLOR2 colorFromRGB(96, 190, 216)
-#define BASE_PALETTE_COLOR3 colorFromRGB(235, 114, 145)
-#define BASE_PALETTE_COLOR4 colorFromRGB(131, 209, 129)
-#define BASE_PALETTE_COLOR5 colorFromRGB(145, 99, 150)
+#define BASE_PALETTE_COLOR1 colorFromRGB(252, 231, 103) //fce766
+#define BASE_PALETTE_COLOR2 colorFromRGB(96, 190, 216)  //60bed8
+#define BASE_PALETTE_COLOR3 colorFromRGB(235, 114, 145) //eb7291
+#define BASE_PALETTE_COLOR4 colorFromRGB(131, 209, 129) //83D181
+#define BASE_PALETTE_COLOR5 colorFromRGB(145, 99, 150)  //916396
 
 // DEVICES
 
@@ -60,8 +60,8 @@
 
 //   TIMES
 
-#define SECOND_FOR_ANSWER 15
-#define BASE_TIME_INTERVAL 0.1f
+#define SECOND_FOR_ANSWER 30
+#define BASE_TIME_INTERVAL 0.01f
 
 
 #endif /* Global_h */

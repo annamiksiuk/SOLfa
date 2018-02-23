@@ -69,7 +69,9 @@ typedef NS_ENUM(NSInteger, AMStateGame) {
 
 - (BOOL) checkAnswerNote:(AMNote*)answerNote {
     
-    if (self.randomNote.octave == answerNote.octave && self.randomNote.note == answerNote.note && self.randomNote.duration == answerNote.duration) {
+    if (self.randomNote.octave == answerNote.octave &&
+        self.randomNote.note == answerNote.note &&
+        self.randomNote.duration == answerNote.duration) {
         
         self.correctAnswer++;
         return YES;
@@ -90,7 +92,9 @@ typedef NS_ENUM(NSInteger, AMStateGame) {
     AMNoteOctave noteOctave = arc4random() % 2;
     AMNoteDuration noteDuration = arc4random() % 5;
     
-    AMNote* note = [[AMNote alloc] initWithNote:noteName octave:noteOctave duration:noteDuration];
+    AMNote* note = [[AMNote alloc] initWithNote:noteName
+                                         octave:noteOctave
+                                       duration:noteDuration];
     
     self.randomNote = note;
     

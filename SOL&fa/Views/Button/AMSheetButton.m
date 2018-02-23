@@ -7,6 +7,7 @@
 //
 
 #import "AMSheetButton.h"
+#import "Global.h"
 
 @implementation AMSheetButton
 
@@ -22,6 +23,9 @@
         self.layer.shadowRadius = 5;
         self.layer.shadowOffset = CGSizeMake(0, 2.0f);
         self.layer.masksToBounds = NO;
+        [self setTitleColor:BASE_PALETTE_COLOR5 forState:UIControlStateNormal];
+        self.titleLabel.font = [UIFont fontWithName:BASE_FONT_NAME size:BASE_FONT_SIZE];
+        self.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
         
     }
     return self;

@@ -1,0 +1,29 @@
+/* 
+  Localizable.strings
+  SOL&fa
+
+  Created by Anna Miksiuk on 18.02.2018.
+  Copyright © 2018 Anna Miksiuk. All rights reserved.
+*/
+
+"AMNoteNameA" = "A";
+"AMNoteNameB" = "B";
+"AMNoteNameC" = "C";
+"AMNoteNameD" = "D";
+"AMNoteNameE" = "E";
+"AMNoteNameF" = "F";
+"AMNoteNameG" = "G";
+
+"AMNoteOctaveFirst" = "One lined";
+"AMNoteOctaveSecond" = "Two lined";
+
+"LastTime" = "Last time";
+"LastScore" = "Last score";
+"BestTime" = "Best time";
+"BestScore" = "Best score";
+"Second" = "sec";
+
+
+"Last" = "Last results";
+"Best" = "Best results";
+"In" = "in";

@@ -1,0 +1,29 @@
+/* 
+  Localizable.strings
+  SOL&fa
+
+  Created by Anna Miksiuk on 18.02.2018.
+  Copyright © 2018 Anna Miksiuk. All rights reserved.
+*/
+
+"AMNoteNameA" = "ДО";
+"AMNoteNameB" = "РЕ";
+"AMNoteNameC" = "МИ";
+"AMNoteNameD" = "ФА";
+"AMNoteNameE" = "СОЛЬ";
+"AMNoteNameF" = "ЛЯ";
+"AMNoteNameG" = "СИ";
+
+"AMNoteOctaveFirst" = "Первая октава";
+"AMNoteOctaveSecond" = "Вторая октава";
+
+"LastTime" = "Последнее время";
+"LastScore" = "Последний счет";
+"BestTime" = "Лучшее время";
+"BestScore" = "Лучший счет";
+"Second" = "сек";
+
+"Last" = "Последний результат";
+"Best" = "Лучший результат";
+"In" = "за";
+

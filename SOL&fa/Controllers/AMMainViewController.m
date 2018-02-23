@@ -16,6 +16,7 @@
 #import "AMNoteGame.h"
 #import "AMTimeLineView.h"
 #import "AMInfoManager.h"
+#import <AVKit/AVKit.h>
 
 @interface AMMainViewController () <AMAnswerViewDelegate, AMTimeLineViewDelegate>
 
@@ -36,6 +37,10 @@
 @property (strong, nonatomic) AMNote* answerNote;
 @property (strong, nonatomic) AMNoteGame* game;
 @property (assign, nonatomic) NSTimeInterval timeOfGame;
+@property (strong, nonatomic) UIView* helperView;
+
+@property (strong, nonatomic) AMSheetButton* audioButton;
+@property (strong, nonatomic) AVAudioPlayer* backgroundPlayer;
 
 @end
 
@@ -57,7 +62,6 @@
     
     //----------- Add background
     
-    //self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"Background"]];
     UIImageView* imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Background"]];
     imageView.contentMode = UIViewContentModeScaleAspectFill;
     [imageView setFrame:self.view.frame];
@@ -113,6 +117,10 @@
     self.game = [[AMNoteGame alloc] initWithCountQuestion:COUNT_QUESTION];
     self.timeOfGame = 0;
     
+    //---------- Sound
+    
+    [self playAudioBackground];
+    
 }
 
 - (void) viewWillLayoutSubviews {
@@ -147,7 +155,13 @@
         UIColor* backgroundColor = [arrayColors objectAtIndex:indexSheet % [arrayColors count]];
         AMSheetButton* sheet = [self createSheetButtonWithFrame:CGRectZero backgroundColor:backgroundColor];
         [self.nextSheets addObject:sheet];
-        [self.view addSubview:sheet];
+        if (self.lastTimeLabel) {
+            
+            [self.view insertSubview:sheet belowSubview:self.lastTimeLabel];
+        } else {
+            
+            [self.view addSubview:sheet];
+        }
         
     }
     
@@ -166,6 +180,7 @@
                                     UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     
     return infoLabel;
+    
 }
 
 - (void) createInfoScreen {
@@ -174,27 +189,31 @@
     CGFloat height = CGRectGetHeight(self.view.frame);
     CGFloat stepY = 0.1f * height;
     
-    CGRect frame = CGRectMake(width * 0.1f, height / 2 - 2 * stepY, width * 0.8f, height * 0.1f);
+    CGRect frame = CGRectMake(width * 0.1f, height / 2 - 2 * stepY, width * 0.7f, height * 0.1f);
     
     UILabel *lastTimeLabel = [self createLabelWithFrame:frame];
+    lastTimeLabel.textAlignment = NSTextAlignmentLeft;
     self.lastTimeLabel = lastTimeLabel;
     [self.view addSubview:lastTimeLabel];
     
     frame.origin.y += stepY / 2;
     
     UILabel *lastScoreLabel = [self createLabelWithFrame:frame];
+    lastScoreLabel.textAlignment = NSTextAlignmentRight;
     self.lastScoreLabel = lastScoreLabel;
     [self.view addSubview:lastScoreLabel];
     
     frame.origin.y += stepY;
     
     UILabel *bestTimeLabel = [self createLabelWithFrame:frame];
+    bestTimeLabel.textAlignment = NSTextAlignmentLeft;
     self.bestTimeLabel = bestTimeLabel;
     [self.view addSubview:bestTimeLabel];
     
     frame.origin.y += stepY / 2;
     
     UILabel *bestScoreLabel = [self createLabelWithFrame:frame];
+    bestScoreLabel.textAlignment = NSTextAlignmentRight;
     self.bestScoreLabel = bestScoreLabel;
     [self.view addSubview:bestScoreLabel];
 
@@ -208,8 +227,6 @@
 - (AMSheetButton*) createSheetButtonWithFrame:(CGRect)frame backgroundColor:(UIColor*)backgroundColor {
     
     AMSheetButton* sheetButton = [[AMSheetButton alloc] initWithFrame:frame];
-    [sheetButton.titleLabel setFont:[UIFont fontWithName:BASE_FONT_NAME size:BASE_FONT_SIZE]];
-    [sheetButton setTitleColor:BASE_PALETTE_COLOR5 forState:UIControlStateNormal];
     sheetButton.backgroundColor = backgroundColor;
     return sheetButton;
     
@@ -221,25 +238,58 @@
     CGFloat height = CGRectGetHeight(self.view.frame);
     CGFloat topArea = fabs((height - width) / 2.f) - HEIGHT_STATUS_BAR;
     
+    if (iPad) {
+        topArea *= 1.3f;
+    }
+    
     CGFloat side = MIN(topArea * 0.75f, MIN(width, height) * 0.2f);
+    
+    if (iPad) {
+        
+        side = MIN(topArea, MIN(width, height) * 0.2f);
+        
+    }
     
     CGRect frame = CGRectMake(0, 0, side, side);
     
+    UIView* helperView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MIN(width, height) * 0.8f, side * 1.2f)];
+    helperView.backgroundColor = [UIColor clearColor];
+    helperView.layer.cornerRadius = CORNER_RADIUS;
+    helperView.alpha = 0.f;
+    [self.view addSubview:helperView];
+    self.helperView = helperView;
+    
     AMSheetButton* noteOctaveButton = [self createSheetButtonWithFrame:frame backgroundColor:BASE_PALETTE_COLOR1];
+    noteOctaveButton.titleLabel.font = [UIFont fontWithName:BASE_FONT_NAME size:BASE_FONT_SIZE - 5];
     [self.view addSubview:noteOctaveButton];
     self.noteOctaveButton = noteOctaveButton;
-
-    CGFloat offsetX = width / 4;
     
     AMSheetButton* noteNameButton = [self createSheetButtonWithFrame:frame backgroundColor:BASE_PALETTE_COLOR2];
     [self.view addSubview:noteNameButton];
     self.noteNameButton = noteNameButton;
     
-    offsetX += width / 4;
-    
     AMSheetButton* noteDurationButton = [self createSheetButtonWithFrame:frame backgroundColor:BASE_PALETTE_COLOR3];
     [self.view addSubview:noteDurationButton];
     self.noteDurationButton = noteDurationButton;
+    
+    if (iPhone) {
+        frame.size.width /= 2.f;
+        frame.size.height /= 2.f;
+    }
+    
+    AMSheetButton* audioButton = [self createSheetButtonWithFrame:frame backgroundColor:[UIColor clearColor]];
+    audioButton.layer.shadowColor = BASE_PALETTE_COLOR5.CGColor;
+    audioButton.imageView.contentMode = UIViewContentModeScaleAspectFill;
+    if ([AMInfoManager sharedManager].sound) {
+        [audioButton setImage:[UIImage imageNamed:@"SoundOn"] forState:UIControlStateNormal];
+    } else {
+        [audioButton setImage:[UIImage imageNamed:@"SoundOff"] forState:UIControlStateNormal];
+    }
+    [audioButton addTarget:self
+                    action:@selector(actionAudio:)
+          forControlEvents:UIControlEventTouchUpInside];
+    self.audioButton = audioButton;
+    [self.view addSubview:audioButton];
     
     [self animateHideQuestion];
     
@@ -258,6 +308,7 @@
                                     UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin |
                                     UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     answerView.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.8f];
+    answerView.alpha = 0.f;
     
     return answerView;
     
@@ -277,6 +328,7 @@
     self.timeLine = timeLine;
     
 }
+
 /*
 - (CAEmitterLayer*) createEmmiterLayer {
     
@@ -293,18 +345,45 @@
 */
 - (void) updateInfo {
    
-    self.lastTimeLabel.text = [NSString stringWithFormat:@"Last time: %.2f second", [AMInfoManager sharedManager].lastTime];
-    self.lastScoreLabel.text = [NSString stringWithFormat:@"Last score: %ld / %d", [AMInfoManager sharedManager].lastScore, COUNT_QUESTION];
-    self.bestTimeLabel.text = [NSString stringWithFormat:@"Best time: %.2f second", [[AMInfoManager sharedManager] valueBestTime]];
-    self.bestScoreLabel.text = [NSString stringWithFormat:@"Best score: %ld / %d", [[AMInfoManager sharedManager] valueBestScore], COUNT_QUESTION];
+    
+    self.lastTimeLabel.text = [NSString stringWithFormat:@"%@:",
+                               NSLocalizedString(@"Last", "")];
+    
+    self.lastScoreLabel.text = [NSString stringWithFormat:@"%ld/%d %@ %.2f %@",
+                                [AMInfoManager sharedManager].lastScore, COUNT_QUESTION,
+                                NSLocalizedString(@"In", ""),
+                                [AMInfoManager sharedManager].lastTime,
+                                NSLocalizedString(@"Second", "")];
+    
+    self.bestTimeLabel.text = [NSString stringWithFormat:@"%@:",
+                               NSLocalizedString(@"Best", "")];
+    
+    self.bestScoreLabel.text = [NSString stringWithFormat:@"%ld/%d %@ %.2f %@",
+                               [AMInfoManager sharedManager].valueBestScore, COUNT_QUESTION,
+                               NSLocalizedString(@"In", ""),
+                               [AMInfoManager sharedManager].valueBestTime,
+                               NSLocalizedString(@"Second", "")];
+    
+    /*
+    self.lastTimeLabel.text = [NSString stringWithFormat:@"%@: %.2f %@", NSLocalizedString(@"LastTime", ""),[AMInfoManager sharedManager].lastTime, NSLocalizedString(@"Second", "")];
+    self.lastScoreLabel.text = [NSString stringWithFormat:@"%@: %ld / %d", NSLocalizedString(@"LastScore", ""), [AMInfoManager sharedManager].lastScore, COUNT_QUESTION];
+    self.bestTimeLabel.text = [NSString stringWithFormat:@"%@: %.2f %@", NSLocalizedString(@"BestTime", ""), [[AMInfoManager sharedManager] valueBestTime], NSLocalizedString(@"Second", "")];
+    self.bestScoreLabel.text = [NSString stringWithFormat:@"%@: %ld / %d", NSLocalizedString(@"BestScore", ""), [[AMInfoManager sharedManager] valueBestScore], COUNT_QUESTION];
+    */
     
 }
 
 - (void) updateQuestion {
     
-    [self.noteOctaveButton setTitle:[[self.game getQuestionNote] nameOctave] forState:UIControlStateNormal];
-    [self.noteNameButton setTitle:[[self.game getQuestionNote] nameNote]forState:UIControlStateNormal];
-    [self.noteDurationButton setTitle:[[self.game getQuestionNote] nameDuration] forState:UIControlStateNormal];
+    
+    [self.noteOctaveButton setTitle:[[self.game getQuestionNote] nameOctave]
+                           forState:UIControlStateNormal];
+    
+    [self.noteNameButton setTitle:[[self.game getQuestionNote] nameNote]
+                         forState:UIControlStateNormal];
+    
+    [self.noteDurationButton setTitle:[[self.game getQuestionNote] nameDuration]
+                             forState:UIControlStateNormal];
     
 }
 
@@ -312,14 +391,7 @@
 
 - (void) didSelectNote:(AMNote*)note {
     
-    if (note) {
-
-        self.answerNote = note;
-        
-    } else {
-        
-        self.answerNote = nil;
-    }
+    self.answerNote = note;
     
 }
 
@@ -330,10 +402,13 @@
     if ([self.game checkAnswerNote:self.answerNote]) {
         
         self.timeOfGame += timeInterval;
+        [self animateRightAnswer];
         
     } else {
         
         self.timeOfGame += SECOND_FOR_ANSWER;
+        [self animateWrongAnswer];
+        
     }
     
     self.answerNote = nil;
@@ -343,7 +418,7 @@
 - (void) didEndedTime {
     
     self.timeOfGame += SECOND_FOR_ANSWER;
-    
+    [self animateWrongAnswer];
     self.answerNote = nil;
     [self.game breakQuestion];
     [self moveSheet];
@@ -373,6 +448,38 @@
 
 #pragma mark - Actions
 
+- (void) playAudioBackground {
+    
+    NSURL *url = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"BackgroundSound" ofType:@"mp3"]];
+    AVAudioPlayer *audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:nil];
+    audioPlayer.numberOfLoops = -1;
+    
+    if ([AMInfoManager sharedManager].sound) {
+        [audioPlayer play];
+    }
+    
+    self.backgroundPlayer = audioPlayer;
+    
+}
+
+- (void) actionAudio:(AMSheetButton*)sender {
+    
+    [AMInfoManager sharedManager].sound = ![AMInfoManager sharedManager].sound;
+    
+    if ([AMInfoManager sharedManager].sound) {
+        
+        [self.audioButton setImage:[UIImage imageNamed:@"SoundOn"] forState:UIControlStateNormal];
+        [self.backgroundPlayer play];
+        
+    } else {
+        
+        [self.audioButton setImage:[UIImage imageNamed:@"SoundOff"] forState:UIControlStateNormal];
+        [self.backgroundPlayer stop];
+    }
+    
+    
+    
+}
 
 #pragma mark - Animations
 
@@ -497,7 +604,7 @@
     CGRect newFrame = [self calculateFrameCurrentSheetForSize:self.view.frame.size];
     
     __weak typeof(sheet) weakSheet = sheet;
-    
+
     [UIView animateWithDuration:0.5f
                           delay:0
          usingSpringWithDamping:0.7f
@@ -508,14 +615,13 @@
                          weakSheet.frame = newFrame;
                          
                      }
-                     completion:^(BOOL finished) {
-                         
-                     }];
+                     completion:nil];
     
+
     AMAnswerView* answerView = [self createAnswerViewForSheet:sheet];
     answerView.delegate = self;
     [sheet addSubview:answerView];
-    
+ 
     [self animateShowAnswerView:answerView];
     
     [self.timeLine startTime];
@@ -525,13 +631,13 @@
 - (void) animateShowAnswerView:(AMAnswerView*)answerView {
     
     __weak typeof(answerView) weakAnswerView = answerView;
-    
-    [UIView animateWithDuration:.5f
+    [UIView animateWithDuration:0.3f
+                          delay:0.2f
+                        options:UIViewAnimationOptionCurveEaseInOut
                      animations:^{
-                         
                          weakAnswerView.alpha = 1.f;
-                         
-                     }];
+                     }
+                     completion:nil];
     
 }
 
@@ -539,7 +645,7 @@
     
     __weak typeof(answerView) weakAnswerView = answerView;
     
-    [UIView animateWithDuration:.5f
+    [UIView animateWithDuration:.3f
                      animations:^{
                          
                          weakAnswerView.alpha = 0.f;
@@ -563,16 +669,22 @@
     frame.size.width /= 20;
     frame.size.height /= 30;
     
+    for (UIView* subview in sheet.subviews) {
+        if ([subview isKindOfClass:[AMAnswerView class]]) {
+            
+            [self animateHideAnswerView:(AMAnswerView*)subview];
+        }
+    }
+    
     __weak typeof(sheet) weakSheet = sheet;
-    [UIView animateWithDuration:1.7f
+    
+    [UIView animateWithDuration:1.5f
                      animations:^{
                          
                          weakSheet.frame = frame;
                          weakSheet.backgroundColor = [self decreaseColorSaturation:weakSheet.backgroundColor];
                          
                      }];
-    
-    //[self animateHideAnswerView:[sheet.subviews firstObject]];
     
 }
 
@@ -591,7 +703,11 @@
                          weakSelf.bestTimeLabel.alpha = 1.f;
                          weakSelf.bestScoreLabel.alpha = 1.f;
                      }
-                     completion:nil];
+                     completion:^(BOOL finished) {
+                         if ([weakSelf.nextSheets count] == 0) {
+                             [weakSelf createSheets];
+                         }
+                     }];
     
 }
 
@@ -614,11 +730,40 @@
 
 - (void) animateRightAnswer {
     
+    __weak typeof(self) weakSelf = self;
+    
+    [UIView animateWithDuration:0.3f
+                     animations:^{
+                         weakSelf.helperView.backgroundColor = BASE_PALETTE_COLOR4;
+                         weakSelf.helperView.alpha = 1.f;
+                     }
+                     completion:^(BOOL finished) {
+                         
+                         [UIView animateWithDuration:0.2f
+                                          animations:^{
+                                              weakSelf.helperView.alpha = 0.f;
+                                          }];
+                         
+                     }];
     
 }
 
 - (void) animateWrongAnswer {
     
+    __weak typeof(self) weakSelf = self;
+    
+    [UIView animateWithDuration:0.3f
+                     animations:^{
+                         weakSelf.helperView.backgroundColor = BASE_PALETTE_COLOR3;
+                         weakSelf.helperView.alpha = 1.f;
+                     }
+                     completion:^(BOOL finished) {
+                         
+                         [UIView animateWithDuration:0.2f
+                                          animations:^{
+                                              weakSelf.helperView.alpha = 0.f;
+                                          }];
+                     }];
     
 }
 
@@ -689,24 +834,45 @@
     
     CGFloat topArea = fabs((height - width) / 2.f) - HEIGHT_STATUS_BAR;
     
-    if (size.width < size.height) {
+    //CGFloat side = MIN(topArea * 0.75f, MIN(width, height) * 0.2f);
+    if (iPad) {
+        topArea *= 1.3f;
+    }
+    
+    CGFloat side = MIN(topArea * 0.75f, MIN(width, height) * 0.2f);
+    
+    if (iPad) {
         
-        self.noteOctaveButton.center = CGPointMake(width / 4, topArea * 0.75f / 2.f + HEIGHT_STATUS_BAR);
-        CGFloat offsetX = width / 4;
-        self.noteNameButton.center = CGPointMake(width / 4 + offsetX, topArea * 0.75f / 2.f + HEIGHT_STATUS_BAR);
-        offsetX += width / 4;
-        self.noteDurationButton.center = CGPointMake(width / 4 + offsetX, topArea * 0.75f / 2.f + HEIGHT_STATUS_BAR);
-        
-    } else {
-        
-        self.noteOctaveButton.center = CGPointMake(topArea * 0.75f / 2.f + HEIGHT_STATUS_BAR, height / 4);
-        CGFloat offsetY = height / 4;
-        self.noteNameButton.center = CGPointMake(topArea * 0.75f / 2.f + HEIGHT_STATUS_BAR, height / 4 + offsetY);
-        offsetY += height / 4;
-        self.noteDurationButton.center = CGPointMake(topArea * 0.75f / 2.f + HEIGHT_STATUS_BAR, height / 4 + offsetY);
+        side = MIN(topArea, MIN(width, height) * 0.2f);
         
     }
     
+    CGFloat offset = topArea * 0.75f / 2.f + HEIGHT_STATUS_BAR;
+    
+    if (size.width < size.height) {
+        
+        self.noteOctaveButton.center = CGPointMake(width / 4, offset);
+        CGFloat offsetX = width / 4;
+        self.noteNameButton.center = CGPointMake(width / 4 + offsetX, offset);
+        self.helperView.frame = CGRectMake(0, 0, MIN(width, height) * 0.8f, side * 1.2f);
+        offsetX += width / 4;
+        self.noteDurationButton.center = CGPointMake(width / 4 + offsetX, offset);
+        offsetX += width / 5;
+        self.audioButton.center = CGPointMake(width / 4 + offsetX, offset);
+    } else {
+        
+        self.noteOctaveButton.center = CGPointMake(offset, height / 4);
+        CGFloat offsetY = height / 4;
+        self.noteNameButton.center = CGPointMake(offset, height / 4 + offsetY);
+        self.helperView.frame = CGRectMake(0, 0, side * 1.2f, MIN(width, height) * 0.8f);
+        offsetY += height / 4;
+        self.noteDurationButton.center = CGPointMake(offset, height / 4 + offsetY);
+        offsetY += height / 5;
+        self.audioButton.center = CGPointMake(offset, height / 4 + offsetY);
+        
+    }
+    
+    self.helperView.center = self.noteNameButton.center;
 }
 
 - (void) changeOrientationTimeLineForSize:(CGSize)size {
@@ -715,6 +881,10 @@
     CGFloat height = size.height;
     
     CGFloat topArea = fabs((height - width) / 2.f) - HEIGHT_STATUS_BAR;
+    
+    if (iPad) {
+        topArea *= 1.4f;
+    }
     
     CGFloat widthTimeLine =  (width < height) ? PERCENT_QUESTION_SHEET / 100.f * width : topArea * 0.2f;
     CGFloat heightTimeLine = (width < height) ? topArea * 0.2f : PERCENT_QUESTION_SHEET / 100.f * height;
@@ -766,6 +936,7 @@
             [self animateHideQuestion];
             [self animateShowInfo];
             
+            //[self createSheets];
         }
         
     }
@@ -796,6 +967,8 @@
     [AMInfoManager sharedManager].lastTime = self.timeOfGame;
     [AMInfoManager sharedManager].lastScore = [self.game getCorrectAnswer];
     [[AMInfoManager sharedManager] saveInfo];
+    self.timeOfGame = 0;
+    
 }
 
 - (UIColor*) increaseColorSaturation:(UIColor*)color {

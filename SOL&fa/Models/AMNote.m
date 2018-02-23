@@ -27,19 +27,19 @@
     
     switch (self.note) {
         case AMNoteNameA:
-            return @"A";
+            return NSLocalizedString(@"AMNoteNameA", "");
         case AMNoteNameB:
-            return @"B";
+            return NSLocalizedString(@"AMNoteNameB", "");
         case AMNoteNameC:
-            return @"C";
+            return NSLocalizedString(@"AMNoteNameC", "");
         case AMNoteNameD:
-            return @"D";
+            return NSLocalizedString(@"AMNoteNameD", "");
         case AMNoteNameE:
-            return @"E";
+            return NSLocalizedString(@"AMNoteNameE", "");
         case AMNoteNameF:
-            return @"F";
+            return NSLocalizedString(@"AMNoteNameF", "");
         case AMNoteNameG:
-            return @"G";
+            return NSLocalizedString(@"AMNoteNameG", "");
     }
 }
 
@@ -47,9 +47,9 @@
     
     switch (self.octave) {
         case AMNoteOctaveFirst:
-            return @"One";
+            return NSLocalizedString(@"AMNoteOctaveFirst", "");
         case AMNoteOctaveSecond:
-            return @"Two";
+            return NSLocalizedString(@"AMNoteOctaveSecond", "");
     }
 }
 

@@ -38,6 +38,14 @@ typedef NS_ENUM(NSInteger, AMStaffExtension) {
         self.rows = [NSMutableArray array];
         self.extension = AMStaffExtensionNone;
         
+        UIImageView* clefView = [[UIImageView alloc] initWithFrame:CGRectMake(0, frame.size.height * 0.1f, frame.size.width * 0.2f, frame.size.height * 0.8f)];
+        clefView.image = [UIImage imageNamed:@"ClefBlack"];
+        clefView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight |
+                                    UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin |
+                                    UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+
+        [self addSubview:clefView];
+        
     }
     return self;
 }

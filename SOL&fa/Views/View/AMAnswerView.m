@@ -37,6 +37,7 @@
             [self.delegate didSelectNote:nil];
             
         } else {
+            
             CGPoint point = answer.center;
             CGFloat offsetY = CGRectGetHeight(answer.frame) * 0.28f;
             point.y += offsetY;
@@ -45,6 +46,16 @@
             AMNote* note = [self.staffView noteForPoint:point];
             note.duration = answer.duration;
             [self.delegate didSelectNote:note];
+            
+            
+            if ((note.octave == AMNoteOctaveFirst && note.note == AMNoteNameG) || note.octave == AMNoteOctaveSecond) {
+                
+                CGAffineTransform rotateTransform = CGAffineTransformMakeRotation(-M_PI);
+                CGAffineTransform translationTransform = CGAffineTransformMakeTranslation(0, CGRectGetHeight(answer.frame) * 0.6);
+                answer.transform = CGAffineTransformConcat(rotateTransform, translationTransform);
+                
+            }
+            
         }
     }
 }
@@ -59,7 +70,8 @@
         self.layer.cornerRadius = 20;
         self.clipsToBounds = YES;
         
-        UIPanGestureRecognizer* panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
+        UIPanGestureRecognizer* panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self
+                                                                                     action:@selector(handlePan:)];
         panGesture.delegate = self;
         
         [self addGestureRecognizer:panGesture];
@@ -147,8 +159,6 @@
                     self.oldPositionDraggedAnswer = self.prevPositionAnswer;
                     self.answer = nil;
                     self.prevPositionAnswer = CGPointZero;
-                    
-                    //self.touchOffset = CGPointMake(CGRectGetMidX(self.draggingAnswer.frame) - currentPoint.x, CGRectGetMidY(self.draggingAnswer.frame) - currentPoint.y);
                     self.touchOffset = CGPointZero;
                     
                     [self animateBeginMovesDraggingAnswer];
@@ -158,8 +168,6 @@
                 
                 self.oldPositionDraggedAnswer = currentView.center;
                 self.draggingAnswer = (AMNoteImageView*)currentView;
-                
-                //self.touchOffset = CGPointMake(CGRectGetMidX(self.draggingAnswer.frame) - currentPoint.x, CGRectGetMidY(self.draggingAnswer.frame) - currentPoint.y);
                 self.touchOffset = CGPointZero;
                 
                 [self animateBeginMovesDraggingAnswer];
@@ -190,7 +198,8 @@
             CGPoint anchorPoint = [self.staffView anchorForPoint:[self.staffView convertPoint:point fromView:self]];
             anchorPoint = [self convertPoint:anchorPoint fromView:self.staffView];
 
-            [self animateMovesView:self.draggingAnswer toPoint:CGPointMake(anchorPoint.x + self.touchOffset.x, anchorPoint.y + self.touchOffset.y - offsetY)];
+            [self animateMovesView:self.draggingAnswer
+                           toPoint:CGPointMake(anchorPoint.x + self.touchOffset.x, anchorPoint.y + self.touchOffset.y - offsetY)];
                 
             [self setAnswer];
             
@@ -214,11 +223,11 @@
     __weak typeof(view) weakView = view;
     [UIView animateWithDuration:0.2f
                           delay:0
-         usingSpringWithDamping:0.1f
+         usingSpringWithDamping:0.5f
           initialSpringVelocity:0
                         options:UIViewAnimationOptionCurveEaseOut
                      animations:^{
-                         
+                         weakView.transform = CGAffineTransformIdentity;
                          weakView.center = point;
                     }
                      completion:nil];
@@ -254,18 +263,20 @@
 - (void) cancelDragging {
     
     [self animateEndMovesDraggingAnswer];
-    [self animateMovesView:self.draggingAnswer toPoint:self.oldPositionDraggedAnswer];
+    [self animateMovesView:self.draggingAnswer
+                   toPoint:self.oldPositionDraggedAnswer];
     self.draggingAnswer = nil;
     self.touchOffset = CGPointZero;
     self.oldPositionDraggedAnswer = CGPointZero;
-    
+
 }
 
 - (void) setAnswer {
     
     if (self.answer && ![self.answer isEqual:self.draggingAnswer]) {
         
-        [self animateMovesView:self.answer toPoint:self.prevPositionAnswer];
+        [self animateMovesView:self.answer
+                       toPoint:self.prevPositionAnswer];
         
     }
     

@@ -12,6 +12,7 @@ static NSString* kLastTime = @"kLastTime";
 static NSString* kLastScore = @"kLastScore";
 static NSString* kBestTime = @"kBestTime";
 static NSString* kBestScore = @"kBestScore";
+static NSString* kSound = @"kSound";
 
 @interface AMInfoManager()
 
@@ -26,11 +27,7 @@ static NSString* kBestScore = @"kBestScore";
     
     _lastTime = lastTime;
     
-    if (lastTime < self.bestTime) {
-        
-        self.bestTime = lastTime;
-        
-    }
+    [self checkTheBestTime:lastTime andScore:self.lastScore];
         
 }
 
@@ -38,9 +35,24 @@ static NSString* kBestScore = @"kBestScore";
 
     _lastScore = lastScore;
     
-    if (lastScore > self.bestScore) {
+    [self checkTheBestTime:self.lastTime andScore:lastScore];
+    
+}
+
+- (void) setSound:(BOOL)sound {
+    
+    _sound = sound;
+    
+    [self saveInfo];
+    
+}
+
+- (void) checkTheBestTime:(NSTimeInterval)time andScore:(NSInteger)score {
+    
+    if (time <= self.bestTime && score >=self.bestScore) {
         
-        self.bestScore = lastScore;
+        self.bestTime = time;
+        self.bestScore = score;
         
     }
     
@@ -69,6 +81,8 @@ static NSString* kBestScore = @"kBestScore";
     [userDefaults setDouble:self.bestTime forKey:kBestTime];
     [userDefaults setInteger:self.bestScore forKey:kBestScore];
     
+    [userDefaults setBool:self.sound forKey:kSound];
+    
     [userDefaults synchronize];
     
 }
@@ -86,6 +100,8 @@ static NSString* kBestScore = @"kBestScore";
     if (self.bestTime == 0) {
         self.bestTime = 500;
     }
+    
+    self.sound = [userDefaults boolForKey:kSound];
     
 }
 
