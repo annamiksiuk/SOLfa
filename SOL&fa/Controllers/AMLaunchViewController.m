@@ -101,7 +101,7 @@
     }
     
     self.logoParts = logoParts;
- 
+    
 }
 
 - (void) viewDidAppear:(BOOL)animated {

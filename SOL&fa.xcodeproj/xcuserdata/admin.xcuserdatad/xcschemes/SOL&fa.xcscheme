@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "845C59D5200FD82900A29307"
-               BuildableName = "SOL&amp;fa.app"
+               BuildableName = "Solfami.app"
                BlueprintName = "SOL&amp;fa"
                ReferencedContainer = "container:SOL&amp;fa.xcodeproj">
             </BuildableReference>
@@ -30,15 +30,6 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "845C59D5200FD82900A29307"
-            BuildableName = "SOL&amp;fa.app"
-            BlueprintName = "SOL&amp;fa"
-            ReferencedContainer = "container:SOL&amp;fa.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -53,16 +44,15 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "845C59D5200FD82900A29307"
-            BuildableName = "SOL&amp;fa.app"
+            BuildableName = "Solfami.app"
             BlueprintName = "SOL&amp;fa"
             ReferencedContainer = "container:SOL&amp;fa.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -72,22 +62,22 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "845C59D5200FD82900A29307"
-            BuildableName = "SOL&amp;fa.app"
+            BuildableName = "Solfami.app"
             BlueprintName = "SOL&amp;fa"
             ReferencedContainer = "container:SOL&amp;fa.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
    </AnalyzeAction>
    <ArchiveAction
       buildConfiguration = "Release"
+      customArchiveName = "Solfami"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>

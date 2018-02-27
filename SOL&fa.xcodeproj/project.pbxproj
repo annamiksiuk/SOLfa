@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		84066E6320246F0100CF7F00 /* AMNoteImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84066E6220246F0100CF7F00 /* AMNoteImageView.m */; };
 		840F93C820185A2D000E3BFD /* AMSheetButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 840F93C420185A2C000E3BFD /* AMSheetButton.m */; };
-		840F93C920185A2D000E3BFD /* AMEmmiterLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 840F93C520185A2C000E3BFD /* AMEmmiterLayer.m */; };
 		841D4544203318FE00042AEE /* AMLaunchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 841D4543203318FE00042AEE /* AMLaunchViewController.m */; };
 		843545F6201E656C004A42C8 /* AMNote.m in Sources */ = {isa = PBXBuildFile; fileRef = 843545F5201E656C004A42C8 /* AMNote.m */; };
 		843545F9201E6AE2004A42C8 /* AMStaffView.m in Sources */ = {isa = PBXBuildFile; fileRef = 843545F8201E6AE2004A42C8 /* AMStaffView.m */; };
@@ -30,8 +29,6 @@
 		84066E6120246F0100CF7F00 /* AMNoteImageView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AMNoteImageView.h; sourceTree = "<group>"; };
 		84066E6220246F0100CF7F00 /* AMNoteImageView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AMNoteImageView.m; sourceTree = "<group>"; };
 		840F93C420185A2C000E3BFD /* AMSheetButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMSheetButton.m; sourceTree = "<group>"; };
-		840F93C520185A2C000E3BFD /* AMEmmiterLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMEmmiterLayer.m; sourceTree = "<group>"; };
-		840F93C620185A2C000E3BFD /* AMEmmiterLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMEmmiterLayer.h; sourceTree = "<group>"; };
 		840F93C720185A2C000E3BFD /* AMSheetButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMSheetButton.h; sourceTree = "<group>"; };
 		841D4542203318FE00042AEE /* AMLaunchViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AMLaunchViewController.h; sourceTree = "<group>"; };
 		841D4543203318FE00042AEE /* AMLaunchViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AMLaunchViewController.m; sourceTree = "<group>"; };
@@ -81,12 +78,12 @@
 			path = Sounds;
 			sourceTree = "<group>";
 		};
-		844B71FB2039A20C00B8C8A1 /* Localizations */ = {
+		844B71FB2039A20C00B8C8A1 /* Strings */ = {
 			isa = PBXGroup;
 			children = (
 				844B72002039A26500B8C8A1 /* Localizable.strings */,
 			);
-			path = Localizations;
+			path = Strings;
 			sourceTree = "<group>";
 		};
 		845C59CD200FD82900A29307 = {
@@ -138,7 +135,6 @@
 				848687172038627E00169706 /* View */,
 				848687152038625B00169706 /* Button */,
 				848687142038624400169706 /* ImageView */,
-				848687162038627400169706 /* Layer */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -168,15 +164,6 @@
 				840F93C420185A2C000E3BFD /* AMSheetButton.m */,
 			);
 			path = Button;
-			sourceTree = "<group>";
-		};
-		848687162038627400169706 /* Layer */ = {
-			isa = PBXGroup;
-			children = (
-				840F93C620185A2C000E3BFD /* AMEmmiterLayer.h */,
-				840F93C520185A2C000E3BFD /* AMEmmiterLayer.m */,
-			);
-			path = Layer;
 			sourceTree = "<group>";
 		};
 		848687172038627E00169706 /* View */ = {
@@ -216,7 +203,7 @@
 			isa = PBXGroup;
 			children = (
 				84399BAB203CA4F600331879 /* Sounds */,
-				844B71FB2039A20C00B8C8A1 /* Localizations */,
+				844B71FB2039A20C00B8C8A1 /* Strings */,
 				845C59E2200FD82900A29307 /* Assets.xcassets */,
 				845C59E4200FD82900A29307 /* LaunchScreen.storyboard */,
 			);
@@ -306,7 +293,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				845C59E9200FD82900A29307 /* main.m in Sources */,
-				840F93C920185A2D000E3BFD /* AMEmmiterLayer.m in Sources */,
 				84066E6320246F0100CF7F00 /* AMNoteImageView.m in Sources */,
 				84ABE13D2036062D00B4898E /* AMInfoManager.m in Sources */,
 				845C59DB200FD82900A29307 /* AppDelegate.m in Sources */,
@@ -393,7 +379,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -443,7 +429,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -454,13 +440,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = N5RAPCKDR7;
 				INFOPLIST_FILE = "SOL&fa/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.annamiksiuk.SOL-fa";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.annamiksiuk.Solfami;
+				PRODUCT_NAME = Solfami;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -469,13 +458,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = N5RAPCKDR7;
 				INFOPLIST_FILE = "SOL&fa/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.annamiksiuk.SOL-fa";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.annamiksiuk.Solfami;
+				PRODUCT_NAME = Solfami;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

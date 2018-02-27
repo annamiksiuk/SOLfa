@@ -32,18 +32,6 @@
 
 #define BASE_FONT_SIZE (iPad ? 30.0f : 20.0f)
 
-//#define BASE_FONT_OF_SIZE(size) [UIFont fontWithName:BASE_FONT_NAME size:size]
-
-//#define BASE_BOLD_FONT_OF_SIZE(size) [UIFont fontWithName:BASE_BOLD_FONT_NAME size:roundf(size)]
-
-
-
-// ANIMATIONS
-
-#define DEFAULT_ANIMATION_DURATION 0.3f
-#define DEFAULT_ANIMATION_DELAY 0.1f
-#define DEFAULT_ANIMATION_OPTIONS (UIViewAnimationOptionCurveEaseOut | UIViewAnimationOptionBeginFromCurrentState)
-
 //  GLOBAL VAR
 
 #define COUNT_QUESTION 10
@@ -61,7 +49,6 @@
 //   TIMES
 
 #define SECOND_FOR_ANSWER 30
-#define BASE_TIME_INTERVAL 0.01f
-
+#define BASE_TIME_INTERVAL 0.1f
 
 #endif /* Global_h */

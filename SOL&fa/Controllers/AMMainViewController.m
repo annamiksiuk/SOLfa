@@ -10,7 +10,6 @@
 #import "Global.h"
 #import "AMAnswerView.h"
 #import "AMSheetButton.h"
-#import "AMEmmiterLayer.h"
 #import "AMStaffView.h"
 #import "AMNote.h"
 #import "AMNoteGame.h"
@@ -39,7 +38,7 @@
 @property (assign, nonatomic) NSTimeInterval timeOfGame;
 @property (strong, nonatomic) UIView* helperView;
 
-@property (strong, nonatomic) AMSheetButton* audioButton;
+@property (strong, nonatomic) AMSheetButton* soundButton;
 @property (strong, nonatomic) AVAudioPlayer* backgroundPlayer;
 
 @end
@@ -87,9 +86,6 @@
     leftSwipeGesture.direction = UISwipeGestureRecognizerDirectionLeft;
     [self.view addGestureRecognizer:upSwipeGesture];
     [self.view addGestureRecognizer:leftSwipeGesture];
-
-    //------- Add sublayer
-    //[self.view.layer addSublayer:[self createEmmiterLayer]];
     
     //------- Create sheets
     self.currentSheet = nil;
@@ -119,7 +115,7 @@
     
     //---------- Sound
     
-    [self playAudioBackground];
+    [self createBackgroundPlayer];
     
 }
 
@@ -164,6 +160,20 @@
         }
         
     }
+    
+}
+
+- (void) createBackgroundPlayer {
+    
+    NSData* audioData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"BackgroundSound" ofType:@"mp3"]];
+    AVAudioPlayer *audioPlayer = [[AVAudioPlayer alloc] initWithData:audioData error:nil];
+    audioPlayer.numberOfLoops = -1;
+    
+    if ([AMInfoManager sharedManager].sound) {
+        [audioPlayer play];
+    }
+    
+    self.backgroundPlayer = audioPlayer;
     
 }
 
@@ -277,19 +287,19 @@
         frame.size.height /= 2.f;
     }
     
-    AMSheetButton* audioButton = [self createSheetButtonWithFrame:frame backgroundColor:[UIColor clearColor]];
-    audioButton.layer.shadowColor = BASE_PALETTE_COLOR5.CGColor;
-    audioButton.imageView.contentMode = UIViewContentModeScaleAspectFill;
+    AMSheetButton* soundButton = [self createSheetButtonWithFrame:frame backgroundColor:[UIColor clearColor]];
+    soundButton.layer.shadowColor = [UIColor clearColor].CGColor;
+    soundButton.imageView.contentMode = UIViewContentModeScaleAspectFill;
     if ([AMInfoManager sharedManager].sound) {
-        [audioButton setImage:[UIImage imageNamed:@"SoundOn"] forState:UIControlStateNormal];
+        [soundButton setImage:[UIImage imageNamed:@"SoundOn"] forState:UIControlStateNormal];
     } else {
-        [audioButton setImage:[UIImage imageNamed:@"SoundOff"] forState:UIControlStateNormal];
+        [soundButton setImage:[UIImage imageNamed:@"SoundOff"] forState:UIControlStateNormal];
     }
-    [audioButton addTarget:self
-                    action:@selector(actionAudio:)
+    [soundButton addTarget:self
+                    action:@selector(actionSound:)
           forControlEvents:UIControlEventTouchUpInside];
-    self.audioButton = audioButton;
-    [self.view addSubview:audioButton];
+    self.soundButton = soundButton;
+    [self.view addSubview:soundButton];
     
     [self animateHideQuestion];
     
@@ -329,27 +339,13 @@
     
 }
 
-/*
-- (CAEmitterLayer*) createEmmiterLayer {
-    
-    UIImage* key = [UIImage imageNamed:@"ClefBlack"];
-    
-    AMEmitterLayer* emitterLayer = [[AMEmitterLayer alloc] initWithCellsImages:@[key]];
-    
-    emitterLayer.emitterPosition = CGPointMake(CGRectGetWidth(self.view.frame) / 2, 20);
-    emitterLayer.emitterSize = CGSizeMake(CGRectGetWidth(self.view.frame), 2);
-    
-    return emitterLayer;
-    
-}
-*/
 - (void) updateInfo {
    
     
     self.lastTimeLabel.text = [NSString stringWithFormat:@"%@:",
                                NSLocalizedString(@"Last", "")];
     
-    self.lastScoreLabel.text = [NSString stringWithFormat:@"%ld/%d %@ %.2f %@",
+    self.lastScoreLabel.text = [NSString stringWithFormat:@"%ld/%d %@ %.1f %@",
                                 [AMInfoManager sharedManager].lastScore, COUNT_QUESTION,
                                 NSLocalizedString(@"In", ""),
                                 [AMInfoManager sharedManager].lastTime,
@@ -358,18 +354,11 @@
     self.bestTimeLabel.text = [NSString stringWithFormat:@"%@:",
                                NSLocalizedString(@"Best", "")];
     
-    self.bestScoreLabel.text = [NSString stringWithFormat:@"%ld/%d %@ %.2f %@",
+    self.bestScoreLabel.text = [NSString stringWithFormat:@"%ld/%d %@ %.1f %@",
                                [AMInfoManager sharedManager].valueBestScore, COUNT_QUESTION,
                                NSLocalizedString(@"In", ""),
                                [AMInfoManager sharedManager].valueBestTime,
                                NSLocalizedString(@"Second", "")];
-    
-    /*
-    self.lastTimeLabel.text = [NSString stringWithFormat:@"%@: %.2f %@", NSLocalizedString(@"LastTime", ""),[AMInfoManager sharedManager].lastTime, NSLocalizedString(@"Second", "")];
-    self.lastScoreLabel.text = [NSString stringWithFormat:@"%@: %ld / %d", NSLocalizedString(@"LastScore", ""), [AMInfoManager sharedManager].lastScore, COUNT_QUESTION];
-    self.bestTimeLabel.text = [NSString stringWithFormat:@"%@: %.2f %@", NSLocalizedString(@"BestTime", ""), [[AMInfoManager sharedManager] valueBestTime], NSLocalizedString(@"Second", "")];
-    self.bestScoreLabel.text = [NSString stringWithFormat:@"%@: %ld / %d", NSLocalizedString(@"BestScore", ""), [[AMInfoManager sharedManager] valueBestScore], COUNT_QUESTION];
-    */
     
 }
 
@@ -422,6 +411,7 @@
     self.answerNote = nil;
     [self.game breakQuestion];
     [self moveSheet];
+    
 }
 
 #pragma mark - Gestures
@@ -448,36 +438,20 @@
 
 #pragma mark - Actions
 
-- (void) playAudioBackground {
-    
-    NSURL *url = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"BackgroundSound" ofType:@"mp3"]];
-    AVAudioPlayer *audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:nil];
-    audioPlayer.numberOfLoops = -1;
-    
-    if ([AMInfoManager sharedManager].sound) {
-        [audioPlayer play];
-    }
-    
-    self.backgroundPlayer = audioPlayer;
-    
-}
-
-- (void) actionAudio:(AMSheetButton*)sender {
+- (void) actionSound:(AMSheetButton*)sender {
     
     [AMInfoManager sharedManager].sound = ![AMInfoManager sharedManager].sound;
     
     if ([AMInfoManager sharedManager].sound) {
         
-        [self.audioButton setImage:[UIImage imageNamed:@"SoundOn"] forState:UIControlStateNormal];
+        [self.soundButton setImage:[UIImage imageNamed:@"SoundOn"] forState:UIControlStateNormal];
         [self.backgroundPlayer play];
         
     } else {
         
-        [self.audioButton setImage:[UIImage imageNamed:@"SoundOff"] forState:UIControlStateNormal];
+        [self.soundButton setImage:[UIImage imageNamed:@"SoundOff"] forState:UIControlStateNormal];
         [self.backgroundPlayer stop];
     }
-    
-    
     
 }
 
@@ -834,7 +808,6 @@
     
     CGFloat topArea = fabs((height - width) / 2.f) - HEIGHT_STATUS_BAR;
     
-    //CGFloat side = MIN(topArea * 0.75f, MIN(width, height) * 0.2f);
     if (iPad) {
         topArea *= 1.3f;
     }
@@ -858,7 +831,7 @@
         offsetX += width / 4;
         self.noteDurationButton.center = CGPointMake(width / 4 + offsetX, offset);
         offsetX += width / 5;
-        self.audioButton.center = CGPointMake(width / 4 + offsetX, offset);
+        self.soundButton.center = CGPointMake(width / 4 + offsetX, offset);
     } else {
         
         self.noteOctaveButton.center = CGPointMake(offset, height / 4);
@@ -868,7 +841,7 @@
         offsetY += height / 4;
         self.noteDurationButton.center = CGPointMake(offset, height / 4 + offsetY);
         offsetY += height / 5;
-        self.audioButton.center = CGPointMake(offset, height / 4 + offsetY);
+        self.soundButton.center = CGPointMake(offset, height / 4 + offsetY);
         
     }
     
@@ -936,7 +909,6 @@
             [self animateHideQuestion];
             [self animateShowInfo];
             
-            //[self createSheets];
         }
         
     }
@@ -968,17 +940,6 @@
     [AMInfoManager sharedManager].lastScore = [self.game getCorrectAnswer];
     [[AMInfoManager sharedManager] saveInfo];
     self.timeOfGame = 0;
-    
-}
-
-- (UIColor*) increaseColorSaturation:(UIColor*)color {
-    
-    CGFloat hue = 0;
-    CGFloat saturation = 0;
-    CGFloat brightness = 0;
-    [color getHue:&hue saturation:&saturation brightness:&brightness alpha:nil];
-    saturation *= 2;
-    return [UIColor colorWithHue:hue saturation:saturation brightness:brightness alpha:1.f];
     
 }
 

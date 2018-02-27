@@ -191,8 +191,8 @@
         
         if ([layer isKindOfClass:[CAGradientLayer class]]) {
             
-            CGFloat width = CGRectGetWidth(self.frame);
-            CGFloat height = CGRectGetHeight(self.frame);
+            CGFloat width = CGRectGetWidth(self.frame) * 0.97f;
+            CGFloat height = CGRectGetHeight(self.frame) * 0.97f;
             
             CGRect frameTimeView = self.timeView.frame;
             
@@ -295,9 +295,9 @@
             frame.size.width = self.currentTime / self.totalTime * width * 0.97f;
             
         } else {
-            
-            frame.origin.y += height * 0.97f - self.currentTime / self.totalTime * height;
-            frame.size.height = self.currentTime / self.totalTime * height;
+
+            frame.origin.y += height * 0.97f - self.currentTime / self.totalTime * height * 0.97f;
+            frame.size.height = self.currentTime / self.totalTime * height * 0.97f;
             
         }
         self.timeView.frame = frame;
